@@ -9,6 +9,7 @@ members = ["apps/api", "apps/worker", "packages/core"]
 
 [tool.uv.sources]
 agentfleet-core = { workspace = true }
+agentfleet-worker = { workspace = true }
 
 [dependency-groups]
 dev = [

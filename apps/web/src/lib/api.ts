@@ -37,3 +37,40 @@ export function createPlaygroundMessage(
 ): Promise<CompletionResult> {
   return post<CompletionResult>("/v1/playground/messages", body);
 }
+
+// --- Runs (M1: live multi-agent handoff) ---
+
+export type StepType = "plan" | "handoff" | "tool" | "llm" | "result";
+export type StepStatus = "started" | "completed" | "failed";
+
+export interface StepEvent {
+  run_id: string;
+  seq: number;
+  agent: string;
+  type: StepType;
+  status: StepStatus;
+  title: string;
+  detail: Record<string, unknown>;
+  tokens_in: number;
+  tokens_out: number;
+  cost_usd: number;
+  latency_ms: number;
+  ts: number;
+}
+
+export interface RunSnapshot {
+  run_id: string;
+  goal: string;
+  status: "queued" | "running" | "success" | "failed";
+  result: string;
+  error: string | null;
+  steps: number;
+}
+
+export function startRun(goal: string, mock = true): Promise<{ run_id: string; status: string }> {
+  return post("/v1/runs", { goal, mock });
+}
+
+export function runEventsUrl(runId: string): string {
+  return `${API_URL}/v1/runs/${runId}/events`;
+}

@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from agentfleet_api.routers import health, playground
+from agentfleet_api.routers import health, playground, runs
 from agentfleet_core import get_settings
 
 
@@ -34,6 +34,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router, tags=["health"])
     app.include_router(playground.router, prefix="/v1/playground", tags=["playground"])
+    app.include_router(runs.router, prefix="/v1/runs", tags=["runs"])
     return app
 
 

@@ -5,6 +5,9 @@ description = "AgentFleet control plane: REST API, auth, streaming"
 requires-python = ">=3.13"
 dependencies = [
     "agentfleet-core",
+    # The M1 demo runner executes the fleet in-process (docs/08-PLAN.md);
+    # the production path enqueues to the worker over Celery instead.
+    "agentfleet-worker",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.34",
     "sqlalchemy[asyncio]>=2.0.36",

@@ -25,7 +25,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/playground", label: "Playground", icon: Terminal },
   { to: "/fleets", label: "Fleets", icon: Network, soon: true },
   { to: "/agents", label: "Agents", icon: Bot, soon: true },
-  { to: "/runs", label: "Runs", icon: Activity, soon: true },
+  { to: "/runs", label: "Runs", icon: Activity },
   { to: "/evals", label: "Evals", icon: FlaskConical, soon: true },
   { to: "/metrics", label: "Metrics", icon: Gauge, soon: true },
   { to: "/integrations", label: "Integrations", icon: Plug, soon: true },

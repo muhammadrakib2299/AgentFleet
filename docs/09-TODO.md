@@ -22,15 +22,14 @@ Granular, checkable tasks by phase. Keep this file live — check items off as y
 - [x] ⭐ LangGraph graph: Orchestrator → Worker — `apps/worker/.../runtime/graph.py` (plan → web_researcher → synthesize; LangGraph 1.2)
 - [x] ⭐ Implement handoff primitive (control transfer + context passing) — `runtime/handoff.py`, emitted as a first-class step
 - [x] ⭐ Integrate ONE MCP tool (web search or mock) into worker agent — deterministic mock `web_search` (`tools/mock_search.py`), MCP-swappable shape
-- [~] ⭐ Celery app + `run_fleet` task done (`tasks.py`); **enqueue from FastAPI `POST /runs` deferred** — needs the DB + SSE pieces below
+- [~] ⭐ `POST /v1/runs` starts a run + `run_fleet` Celery task both exist (`routers/runs.py`, `tasks.py`); **the API demo path runs in-process, not yet via Celery enqueue** — that swap lands with Phase 2 durability
 - [x] ⭐ Async bridge: sync Celery shell → `asyncio.run(execute_run())`; all LangGraph/Claude/MCP code async; connections created inside the loop
 - [ ] Runtime-enforced tool allowlist per agent + `max_steps` + run wall-clock timeout (security gate P1)
-- [ ] ⭐ Persist run + steps; status transitions `queued→running→success/failed`
-- [x] ⭐ Redis pub/sub: worker publishes step events per run id — `RedisPublisher` (`publish.py`); runtime depends only on the `StepPublisher` protocol so tests/demo use `InMemoryPublisher`
-- [ ] ⭐ SSE endpoint; React hook subscribes and renders steps live
+- [ ] ⭐ Persist run + steps; status transitions `queued→running→success/failed` — currently in-memory (`services/run_manager.py`); DB persistence pending the tables
+- [x] ⭐ Redis pub/sub: worker publishes step events per run id — `RedisPublisher` (`publish.py`); runtime depends only on the `StepPublisher` protocol so the API demo path streams over an in-memory bus instead
+- [x] ⭐ SSE endpoint; React hook subscribes and renders steps live — `GET /v1/runs/{id}/events` (SSE) + `useRunStream` + `RunsPage`; dedupes on `seq`
 - [~] ⭐ Seed "Market Brief (lite)" fleet (Orchestrator + WebResearcher) — hardcoded in `graph.py`; DB seed pending the tables
-- [ ] ⭐ **M1:** submit goal → plan → handoff → tool call → result, streamed live
-  - _Runtime slice proven offline today:_ `python apps/worker/scripts/demo_run.py` streams the full plan → handoff → tool → findings → synthesis with cost, using `ScriptedProvider` (no key/Redis/DB). Remaining for M1: DB persistence, `POST /runs` enqueue, SSE relay, live React view.
+- [~] ⭐ **M1:** submit goal → plan → handoff → tool call → result, streamed live — **working in the browser today via the in-process demo path** (mock provider, zero spend): `/runs` page streams all 5 steps + final brief. Remaining to fully close M1: DB persistence, Celery enqueue, and a live-key real-provider run.
 
 ## Phase 2 — Durable & scalable execution
 - [ ] Multiple Celery workers; separate queues (`orchestrator`, `worker`, `eval`)
