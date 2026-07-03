@@ -1,0 +1,27 @@
+[project]
+name = "agentfleet"
+version = "0.1.0"
+description = "AgentFleet monorepo workspace root (not an installable package)"
+requires-python = ">=3.13"
+
+[tool.uv.workspace]
+members = ["apps/api", "apps/worker", "packages/core"]
+
+[tool.uv.sources]
+agentfleet-core = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.25",
+    "httpx>=0.28",
+    "ruff>=0.9",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["apps/api/tests", "apps/worker/tests", "packages/core/tests"]
