@@ -111,3 +111,7 @@ docs/         Full planning & architecture documentation
 | [`11-SECURITY.md`](./docs/11-SECURITY.md) | Threat model (OWASP LLM Top 10), controls by layer, phase-gated checklist |
 | [`12-SEO-AEO-GEO.md`](./docs/12-SEO-AEO-GEO.md) | Discoverability: GitHub, landing/docs site, answer-engine & AI-citation optimization |
 
+## License
+
+MIT — see the [LICENSE](LICENSE) file for details.
+
